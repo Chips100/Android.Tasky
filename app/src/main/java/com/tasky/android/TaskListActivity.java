@@ -41,31 +41,14 @@ public class TaskListActivity extends AppCompatActivity {
 
 
         /* Temporary real environment test for inserting a new task. */
-        Task task = new Task();
-        task.setTitle("Test Task!");
-        task.setDone(true);
-        task.setPostponedUntil(DateTime.now());
-        task.setCreatedFromRecurringTaskId(null);
-        task.setDueDate(DateTime.now().plusDays(5));
-
         TaskyDataProvider dataprovider = new SqliteTaskyDataProvider(this);
-        dataprovider.insertTask(task);
+        Task task = dataprovider.queryTasks(new ValueQueryFilter(TaskyContract.Task._ID, ValueQueryFilter.Type.Equals, 2)).get(0);
 
         TextView txtExample = (TextView)findViewById(R.id.txtExample);
-        txtExample.setText("Erzeugter Task hat ID: " + String.valueOf(task.getId()));
+        txtExample.setText(task.getTitle());
 
-
-        /* Temporary real environment test for querying tasks. */
-        List<Task> tasks = dataprovider.queryTasks(new ValueQueryFilter(TaskyContract.Task._ID, ValueQueryFilter.Type.Equals, 2).Or(
-            new ValueQueryFilter(TaskyContract.Task._ID, ValueQueryFilter.Type.Equals, 3)
-        ));
-        String message = txtExample.getText().toString();
-        message = message + " Gefunden: ";
-
-        for(Task t : tasks) {
-            message += String.valueOf(t.getId());
-        }
-        txtExample.setText(message);
+        task.setTitle("NEWNEWNEW");
+        dataprovider.updateTask(task);
     }
 
     @Override

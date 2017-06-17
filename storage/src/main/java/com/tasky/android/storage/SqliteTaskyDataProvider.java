@@ -36,17 +36,9 @@ public class SqliteTaskyDataProvider implements TaskyDataProvider {
     public void insertTask(Task task) {
         if (task == null) throw new IllegalArgumentException("Parameter task cannot be null.");
 
-        // Fill values to use for insert operation.
-        ContentValues values = new ContentValues();
-        values.put(TaskyContract.Task.COLUMN_NAME_TITLE, task.getTitle());
-        values.put(TaskyContract.Task.COLUMN_NAME_DONE, task.isDone());
-        values.put(TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL, SqliteTools.convertDateTime(task.getPostponedUntil()));
-        values.put(TaskyContract.Task.COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID, task.getCreatedFromRecurringTaskId());
-        values.put(TaskyContract.Task.COLUMN_NAME_DUE_DATE, SqliteTools.convertDateTime(task.getDueDate()));
-
         // Insert new task and put generated Id into the task object.
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long id = db.insert(TaskyContract.Task.TABLE_NAME, null, values);
+        long id = db.insert(TaskyContract.Task.TABLE_NAME, null, createContentValuesFromTask(task));
         task.setId(id);
     }
 
@@ -72,6 +64,30 @@ public class SqliteTaskyDataProvider implements TaskyDataProvider {
         }
         cursor.close();
         return tasks;
+    }
+
+    /**
+     * Updates the task in the storage to match the current state of the specified entity.
+     * @param task Task with the state that should be stored; will be identified by the Id.
+     */
+    @Override
+    public void updateTask(Task task) {
+        ParameterCheck.NotNull(task, "task");
+
+        // Update task with the current data, matching it by its Id.
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.update(TaskyContract.Task.TABLE_NAME, createContentValuesFromTask(task),
+                TaskyContract.Task._ID + "=?", new String[] { String.valueOf(task.getId()) });
+    }
+
+    private ContentValues createContentValuesFromTask(Task task) {
+        ContentValues values = new ContentValues();
+        values.put(TaskyContract.Task.COLUMN_NAME_TITLE, task.getTitle());
+        values.put(TaskyContract.Task.COLUMN_NAME_DONE, task.isDone());
+        values.put(TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL, SqliteTools.convertDateTime(task.getPostponedUntil()));
+        values.put(TaskyContract.Task.COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID, task.getCreatedFromRecurringTaskId());
+        values.put(TaskyContract.Task.COLUMN_NAME_DUE_DATE, SqliteTools.convertDateTime(task.getDueDate()));
+        return values;
     }
 
     private Task readTaskFromCursor(Cursor cursor, Map<String, Integer> indices) {

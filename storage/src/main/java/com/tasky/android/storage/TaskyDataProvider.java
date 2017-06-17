@@ -22,4 +22,10 @@ public interface TaskyDataProvider {
      * @return A list of the tasks from the storage that match the filter.
      */
     List<Task> queryTasks(QueryFilter filter);
+
+    /**
+     * Updates the task in the storage to match the current state of the specified entity.
+     * @param task Task with the state that should be stored; will be identified by the Id.
+     */
+    void updateTask(Task task);
 }
