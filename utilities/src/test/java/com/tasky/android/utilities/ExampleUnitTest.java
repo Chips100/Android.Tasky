@@ -1,4 +1,4 @@
-package com.tasky.android.storage;
+package com.tasky.android.utilities;
 
 import org.junit.Test;
 

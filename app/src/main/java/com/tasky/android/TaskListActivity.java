@@ -12,9 +12,14 @@ import android.widget.TextView;
 
 import com.tasky.android.entities.Task;
 import com.tasky.android.storage.SqliteTaskyDataProvider;
+import com.tasky.android.storage.TaskyContract;
 import com.tasky.android.storage.TaskyDataProvider;
+import com.tasky.android.storage.queries.EmptyQueryFilter;
+import com.tasky.android.storage.queries.ValueQueryFilter;
 
 import org.joda.time.DateTime;
+
+import java.util.List;
 
 public class TaskListActivity extends AppCompatActivity {
 
@@ -49,6 +54,18 @@ public class TaskListActivity extends AppCompatActivity {
         TextView txtExample = (TextView)findViewById(R.id.txtExample);
         txtExample.setText("Erzeugter Task hat ID: " + String.valueOf(task.getId()));
 
+
+        /* Temporary real environment test for querying tasks. */
+        List<Task> tasks = dataprovider.queryTasks(new ValueQueryFilter(TaskyContract.Task._ID, ValueQueryFilter.Type.Equals, 2).Or(
+            new ValueQueryFilter(TaskyContract.Task._ID, ValueQueryFilter.Type.Equals, 3)
+        ));
+        String message = txtExample.getText().toString();
+        message = message + " Gefunden: ";
+
+        for(Task t : tasks) {
+            message += String.valueOf(t.getId());
+        }
+        txtExample.setText(message);
     }
 
     @Override
