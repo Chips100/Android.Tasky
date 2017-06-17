@@ -8,6 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.tasky.android.entities.Task;
+import com.tasky.android.storage.SqliteTaskyDataProvider;
+import com.tasky.android.storage.TaskyDataProvider;
+
+import org.joda.time.DateTime;
 
 public class TaskListActivity extends AppCompatActivity {
 
@@ -26,6 +33,22 @@ public class TaskListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        /* Temporary real environment test for inserting a new task. */
+        Task task = new Task();
+        task.setTitle("Test Task!");
+        task.setDone(true);
+        task.setPostponedUntil(DateTime.now());
+        task.setCreatedFromRecurringTaskId(null);
+        task.setDueDate(DateTime.now().plusDays(5));
+
+        TaskyDataProvider dataprovider = new SqliteTaskyDataProvider(this);
+        dataprovider.insertTask(task);
+
+        TextView txtExample = (TextView)findViewById(R.id.txtExample);
+        txtExample.setText("Erzeugter Task hat ID: " + String.valueOf(task.getId()));
+
     }
 
     @Override
