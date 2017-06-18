@@ -77,4 +77,30 @@ public class PersistentTaskManagerTests {
 
         assertEquals(0, result.size());
     }
+
+    @Test
+    public void PersistentTaskManager_doesNotYieldRelevantTask_IfNotDue() {
+        Task task = new Task();
+        task.setTitle("UNITTEST");
+        task.setDueDate(DateTime.now().plusDays(1));
+        TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(task);
+
+        PersistentTaskManager sut = new PersistentTaskManager(dataproviderMock);
+        List<Task> result = sut.getRelevantTasks();
+
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    public void PersistentTaskManager_doesNotYieldRelevantTask_IfPostponed() {
+        Task task = new Task();
+        task.setTitle("UNITTEST");
+        task.setPostponedUntil(DateTime.now().plusDays(1));
+        TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(task);
+
+        PersistentTaskManager sut = new PersistentTaskManager(dataproviderMock);
+        List<Task> result = sut.getRelevantTasks();
+
+        assertEquals(0, result.size());
+    }
 }

@@ -3,6 +3,8 @@ package com.tasky.android.storage;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 
+import com.tasky.android.utilities.ParameterCheck;
+
 import org.joda.time.DateTime;
 
 import java.util.Map;
@@ -20,6 +22,21 @@ public class SqliteTools {
     public static Long convertDateTime(DateTime value) {
         if (value == null) return null;
         return value.getMillis();
+    }
+
+    /**
+     * Converts the specified value to a String that can be used as an Sqlite query parameter.
+     * @param value Value that should be converted.
+     * @return A string that represents the value as an Sqlite query parameter.
+     */
+    public static String convertSqliteParameter(Object value) {
+        ParameterCheck.NotNull(value, "value");
+
+        if (value instanceof DateTime) {
+            value = convertDateTime((DateTime)value);
+        }
+
+        return value.toString();
     }
 
     /**

@@ -30,7 +30,7 @@ public abstract class QueryFilterBase implements QueryFilter {
      * @param other Other QueryFilter that should make up the combination.
      * @return A QueryFilter that is the combination of this and the specified QueryFilter.
      */
-    public QueryFilter And(QueryFilter other) {
+    public QueryFilterBase And(QueryFilter other) {
         return new CombinedQueryFilter(this, other, CombinedQueryFilter.CombinationType.And);
     }
 
@@ -39,7 +39,7 @@ public abstract class QueryFilterBase implements QueryFilter {
      * @param other Other QueryFilter that should make up the combination.
      * @return A QueryFilter that is the combination of this and the specified QueryFilter.
      */
-    public QueryFilter Or(QueryFilter other) {
+    public QueryFilterBase Or(QueryFilter other) {
         return new CombinedQueryFilter(this, other, CombinedQueryFilter.CombinationType.Or);
     }
 }

@@ -1,5 +1,6 @@
 package com.tasky.android.storage.queries;
 
+import com.tasky.android.storage.SqliteTools;
 import com.tasky.android.utilities.ParameterCheck;
 import com.tasky.android.utilities.ReflectionTools;
 
@@ -49,7 +50,7 @@ public class ValueQueryFilter<TValue> extends QueryFilterBase {
     @Override
     public List<String> getSqliteParameters() {
         List<String> result = new ArrayList();
-        if (type.usesValue()) result.add(expected.toString());
+        if (type.usesValue()) result.add(SqliteTools.convertSqliteParameter(expected));
         return result;
     }
 

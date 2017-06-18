@@ -1,5 +1,8 @@
 package com.tasky.android.storage.queries;
 
+import com.tasky.android.storage.SqliteTools;
+
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.List;
@@ -23,6 +26,15 @@ public class ValueQueryFilterTests {
         List<String> result = sut.getSqliteParameters();
         assertEquals(1, result.size());
         assertEquals("VALUE", result.get(0));
+    }
+
+    @Test
+    public void ValueQueryFilter_parameters_supportsDateTime() {
+        DateTime parameter = new DateTime(2017, 6, 18, 0, 0);
+        QueryFilter sut = new ValueQueryFilter("COLUMN", ValueQueryFilter.Type.Equals, parameter);
+        List<String> result = sut.getSqliteParameters();
+        assertEquals(1, result.size());
+        assertEquals(SqliteTools.convertDateTime(parameter).toString(), result.get(0));
     }
 
     @Test

@@ -4,6 +4,8 @@ import com.tasky.android.entities.Task;
 import com.tasky.android.storage.TaskyContract;
 import com.tasky.android.storage.TaskyDataProvider;
 import com.tasky.android.storage.queries.QueryFilter;
+import com.tasky.android.storage.queries.QueryFilterBase;
+import com.tasky.android.storage.queries.QueryFilterFactory;
 import com.tasky.android.storage.queries.ValueQueryFilter;
 import com.tasky.android.utilities.ParameterCheck;
 
@@ -61,10 +63,17 @@ public final class PersistentTaskManager implements TaskManager {
      */
     @Override
     public List<Task> getRelevantTasks() {
-        // Check due date and postponeduntil.
-        // How to deal with ValueQueryFilters comparing DateTimes?
-        return dataprovider.queryTasks(
-            new ValueQueryFilter(TaskyContract.Task.COLUMN_NAME_DONE, ValueQueryFilter.Type.Equals, false));
+        // Relevant tasks include only tasks which...
+        // ... are not done.
+        QueryFilterBase doneFilter = new ValueQueryFilter(TaskyContract.Task.COLUMN_NAME_DONE, ValueQueryFilter.Type.Equals, false);
+        // ... are due.
+        QueryFilter dueDateFilter = QueryFilterFactory.smallerThanOrNull(
+                TaskyContract.Task.COLUMN_NAME_DUE_DATE, DateTime.now());
+        // ... are not postponed until later than now.
+        QueryFilter postponedUntilFilter = QueryFilterFactory.smallerThanOrNull(
+                TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL, DateTime.now());
+
+        return dataprovider.queryTasks(doneFilter.And(dueDateFilter).And(postponedUntilFilter));
     }
 
     /**
