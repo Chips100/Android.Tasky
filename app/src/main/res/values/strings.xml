@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Android.Tasky</string>
     <string name="action_settings">Settings</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="format_shortdate">yyyy/MM/dd</string>
+
+    <string name="task_title">Title</string>
+    <string name="task_due_date">Due on</string>
+    <string name="task_due_date_description">Enter a date if you do not want the task to appear in your list right away.</string>
+    <string name="task_create_dialog_ok">Create task</string>
 </resources>

@@ -2,29 +2,20 @@ package com.tasky.android;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tasky.android.adapters.TaskArrayAdapter;
-import com.tasky.android.entities.Task;
+import com.tasky.android.dialogs.CreateTaskDialog;
 import com.tasky.android.logic.PersistentTaskManager;
 import com.tasky.android.logic.TaskManager;
 import com.tasky.android.storage.SqliteTaskyDataProvider;
-import com.tasky.android.storage.TaskyContract;
-import com.tasky.android.storage.TaskyDataProvider;
-import com.tasky.android.storage.queries.EmptyQueryFilter;
-import com.tasky.android.storage.queries.ValueQueryFilter;
 
 import org.joda.time.DateTime;
-
-import java.util.List;
 
 public class TaskListActivity extends AppCompatActivity {
     private TaskManager taskManager;
@@ -76,7 +67,15 @@ public class TaskListActivity extends AppCompatActivity {
      * Displays the UI to create a new task.
      */
     public void createNewTask() {
-        Toast.makeText(this, "You might create a new Task now...", Toast.LENGTH_LONG).show();
+        new CreateTaskDialog(this, new CreateTaskDialog.OnTaskCreateListener() {
+            @Override
+            public boolean handleTaskCreate(String title, DateTime dueDate) {
+            // Create task via manager and reload the relevant task list accordingly.
+            taskManager.createTask(title, dueDate);
+            renderRelevantTasks();
+            return true;
+            }
+        }).show();
     }
 
     /**
