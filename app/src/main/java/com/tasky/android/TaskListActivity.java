@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.tasky.android.adapters.TaskArrayAdapter;
 import com.tasky.android.dialogs.CreateTaskDialog;
+import com.tasky.android.entities.Task;
 import com.tasky.android.logic.PersistentTaskManager;
 import com.tasky.android.logic.TaskManager;
 import com.tasky.android.storage.SqliteTaskyDataProvider;
@@ -82,7 +83,14 @@ public class TaskListActivity extends AppCompatActivity {
      * Loads all relevant tasks and displays them in the list.
      */
     public void renderRelevantTasks() {
-        TaskArrayAdapter adapter = new TaskArrayAdapter(this);
+        TaskArrayAdapter adapter = new TaskArrayAdapter(this, new TaskArrayAdapter.OnTaskDoneListener() {
+            @Override
+            public void handleTaskDone(Task task) {
+                // Set task to done via manager and reload the relevant task list accordingly.
+                taskManager.setTaskDone(task.getId());
+                renderRelevantTasks();
+            }
+        });
         adapter.addAll(taskManager.getRelevantTasks());
 
         ListView relevantTaskList = (ListView)findViewById(R.id.relevantTaskList);
