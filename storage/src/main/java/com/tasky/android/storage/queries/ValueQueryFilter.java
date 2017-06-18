@@ -1,6 +1,7 @@
 package com.tasky.android.storage.queries;
 
 import com.tasky.android.utilities.ParameterCheck;
+import com.tasky.android.utilities.ReflectionTools;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class ValueQueryFilter<TValue> extends QueryFilterBase {
     public boolean evaluate(Object target) throws IllegalAccessException {
         // Search for field in object with same name as the column.
         // Ignoring case because Sqlite is not case-sensitive.
-        Field[] fields = target.getClass().getDeclaredFields();
+        List<Field> fields = ReflectionTools.getFieldsWithInheritance(target.getClass());
         for (Field field:fields) {
             if (field.getName().equalsIgnoreCase(columnName)) {
                 // If found, compare the value in the field.
