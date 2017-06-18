@@ -38,9 +38,9 @@ public class ValueQueryFilter<TValue> extends QueryFilterBase {
      */
     @Override
     public String buildSqliteWhereClause() {
-        return this.columnName
+        return this.columnName + " "
                 + type.getSqliteOperator()
-                + (type.usesValue() ? "?" : "");
+                + (type.usesValue() ? " ?" : "");
     }
 
     /**

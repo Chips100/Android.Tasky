@@ -17,7 +17,7 @@ public class ValueQueryFilterTests {
     public void ValueQueryFilter_whereClause_isCorrect() {
         QueryFilter sut = new ValueQueryFilter("COLUMN", ValueQueryFilter.Type.Equals, "VALUE");
         String result = sut.buildSqliteWhereClause();
-        assertEquals("COLUMN=?", result);
+        assertEquals("COLUMN = ?", result);
     }
 
     @Test
@@ -35,6 +35,14 @@ public class ValueQueryFilterTests {
         List<String> result = sut.getSqliteParameters();
         assertEquals(1, result.size());
         assertEquals(SqliteTools.convertDateTime(parameter).toString(), result.get(0));
+    }
+
+    @Test
+    public void ValueQueryFilter_parameters_supportsBoolean() {
+        QueryFilter sut = new ValueQueryFilter("COLUMN", ValueQueryFilter.Type.Equals, true);
+        List<String> result = sut.getSqliteParameters();
+        assertEquals(1, result.size());
+        assertEquals("1", result.get(0));
     }
 
     @Test

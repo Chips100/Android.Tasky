@@ -35,6 +35,9 @@ public class SqliteTools {
         if (value instanceof DateTime) {
             value = convertDateTime((DateTime)value);
         }
+        if (value instanceof Boolean) {
+            value = (Boolean) value ? 1 : 0;
+        }
 
         return value.toString();
     }

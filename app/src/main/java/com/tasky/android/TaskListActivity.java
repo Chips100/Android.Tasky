@@ -8,9 +8,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.tasky.android.adapters.TaskArrayAdapter;
 import com.tasky.android.entities.Task;
+import com.tasky.android.logic.PersistentTaskManager;
+import com.tasky.android.logic.TaskManager;
 import com.tasky.android.storage.SqliteTaskyDataProvider;
 import com.tasky.android.storage.TaskyContract;
 import com.tasky.android.storage.TaskyDataProvider;
@@ -22,6 +27,7 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 public class TaskListActivity extends AppCompatActivity {
+    private TaskManager taskManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,25 +36,18 @@ public class TaskListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.newTaskButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            createNewTask();
             }
         });
 
-
-        /* Temporary real environment test for inserting a new task. */
-        TaskyDataProvider dataprovider = new SqliteTaskyDataProvider(this);
-        Task task = dataprovider.queryTasks(new ValueQueryFilter(TaskyContract.Task._ID, ValueQueryFilter.Type.Equals, 2)).get(0);
-
-        TextView txtExample = (TextView)findViewById(R.id.txtExample);
-        txtExample.setText(task.getTitle());
-
-        task.setTitle("NEWNEWNEW");
-        dataprovider.updateTask(task);
+        // TODO: As a starting point, we do very poor man's DI and Entourage Pattern all the way.
+        // Would be cool to change it. But that needs more understanding...
+        taskManager = new PersistentTaskManager(new SqliteTaskyDataProvider(this));
+        renderRelevantTasks();
     }
 
     @Override
@@ -71,5 +70,23 @@ public class TaskListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Displays the UI to create a new task.
+     */
+    public void createNewTask() {
+        Toast.makeText(this, "You might create a new Task now...", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Loads all relevant tasks and displays them in the list.
+     */
+    public void renderRelevantTasks() {
+        TaskArrayAdapter adapter = new TaskArrayAdapter(this);
+        adapter.addAll(taskManager.getRelevantTasks());
+
+        ListView relevantTaskList = (ListView)findViewById(R.id.relevantTaskList);
+        relevantTaskList.setAdapter(adapter);
     }
 }
