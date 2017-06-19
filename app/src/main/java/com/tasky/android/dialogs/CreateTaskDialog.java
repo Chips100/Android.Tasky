@@ -106,13 +106,13 @@ public class CreateTaskDialog extends Dialog implements View.OnClickListener {
         DateTime current = dueDate != null ? dueDate : DateTime.now().plusDays(1);
 
         // Show DatePicker.
-        new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+        new JodaDatePickerDialog(context, new JodaDatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            dueDate = new DateTime(year, month, dayOfMonth, 0, 0);
+            public void onDateSet(DatePicker view, DateTime date) {
+            dueDate = date;
             dueDateEditText.setText(dueDate.toString(context.getString(R.string.format_shortdate)));
             }
-        }, current.getYear(), current.getMonthOfYear(), current.getDayOfMonth()).show();
+        }, current).show();
     }
 
     /**
