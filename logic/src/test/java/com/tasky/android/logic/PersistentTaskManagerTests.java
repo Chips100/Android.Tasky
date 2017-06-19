@@ -4,6 +4,7 @@ import com.tasky.android.entities.Task;
 import com.tasky.android.logic.Mocks.TaskyDataProviderMock;
 
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.junit.Test;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class PersistentTaskManagerTests {
         assertEquals(1, dataproviderMock.getTasks().size());
         assertEquals("TITLE", dataproviderMock.getTasks().get(0).getTitle());
         assertNull(dataproviderMock.getTasks().get(0).getDueDate());
+        assertEquals(DateTime.now().getMillis(), dataproviderMock.getTasks().get(0).getCreatedOn().getMillis(),
+            Period.seconds(1).getMillis());
     }
 
     @Test
@@ -36,6 +39,8 @@ public class PersistentTaskManagerTests {
         assertEquals(1, dataproviderMock.getTasks().size());
         assertEquals("TITLE", dataproviderMock.getTasks().get(0).getTitle());
         assertEquals(new DateTime(2017, 6, 18, 0, 0), dataproviderMock.getTasks().get(0).getDueDate());
+        assertEquals(DateTime.now().getMillis(), dataproviderMock.getTasks().get(0).getCreatedOn().getMillis(),
+            Period.seconds(1).getMillis());
     }
 
     @Test

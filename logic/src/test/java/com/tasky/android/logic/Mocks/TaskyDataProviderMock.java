@@ -65,6 +65,7 @@ public class TaskyDataProviderMock implements TaskyDataProvider {
         Task result = new Task();
         result.setId(task.getId());
         result.setTitle(task.getTitle());
+        result.setCreatedOn(task.getCreatedOn());
         result.setDone(task.isDone());
         result.setPostponedUntil(task.getPostponedUntil());
         result.setCreatedFromRecurringTaskId(task.getCreatedFromRecurringTaskId());

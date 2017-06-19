@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
  */
 public final class Task extends TaskyEntityBase {
     private String title;
+    private DateTime createdOn;
     private boolean done;
     private DateTime postponedUntil;
     private Integer createdFromRecurringTaskId;
@@ -24,6 +25,17 @@ public final class Task extends TaskyEntityBase {
      */
     public void setTitle(String value) { title = value; }
 
+    /**
+     * Gets the date and time when the task was created.
+     * @return The date and time when the task was created.
+     */
+    public DateTime getCreatedOn() { return createdOn; }
+
+    /**
+     * Sets the date and time when the task was created.
+     * @param value The date and time when the task was created.
+     */
+    public void setCreatedOn(DateTime value) { createdOn = value; }
 
     /**
      * Indicates if this Task has been done.

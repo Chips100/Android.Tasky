@@ -83,6 +83,7 @@ public class SqliteTaskyDataProvider implements TaskyDataProvider {
     private ContentValues createContentValuesFromTask(Task task) {
         ContentValues values = new ContentValues();
         values.put(TaskyContract.Task.COLUMN_NAME_TITLE, task.getTitle());
+        values.put(TaskyContract.Task.COLUMN_NAME_CREATED_ON, SqliteTools.convertDateTime(task.getCreatedOn()));
         values.put(TaskyContract.Task.COLUMN_NAME_DONE, task.isDone());
         values.put(TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL, SqliteTools.convertDateTime(task.getPostponedUntil()));
         values.put(TaskyContract.Task.COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID, task.getCreatedFromRecurringTaskId());
@@ -94,6 +95,7 @@ public class SqliteTaskyDataProvider implements TaskyDataProvider {
         Task task = new Task();
         task.setId(cursor.getLong(indices.get(TaskyContract.Task._ID)));
         task.setTitle(cursor.getString(indices.get(TaskyContract.Task.COLUMN_NAME_TITLE)));
+        task.setCreatedOn(SqliteTools.getDateTime(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_CREATED_ON)));
         task.setDone(SqliteTools.getBoolean(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_DONE)));
         task.setPostponedUntil(SqliteTools.getDateTime(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL)));
         task.setCreatedFromRecurringTaskId(SqliteTools.getNullableInt(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID)));

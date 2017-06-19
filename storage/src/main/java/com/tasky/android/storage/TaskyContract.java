@@ -16,6 +16,7 @@ public final class TaskyContract {
     public static class Task implements BaseColumns {
         public static final String TABLE_NAME = "task";
         public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_CREATED_ON = "createdOn";
         public static final String COLUMN_NAME_DONE = "done";
         public static final String COLUMN_NAME_POSTPONED_UNTIL = "postponedUntil";
         public static final String COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID = "createdFromRecurringTaskId";

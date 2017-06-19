@@ -41,6 +41,7 @@ public final class PersistentTaskManager implements TaskManager {
         Task task = new Task();
         task.setTitle(title);
         task.setDueDate(dueDate);
+        task.setCreatedOn(DateTime.now());
 
         dataprovider.insertTask(task);
         return task;
