@@ -54,7 +54,8 @@ public class PersistentTaskManagerTests {
 
         assertEquals(1, dataproviderMock.getTasks().size());
         assertEquals(42, dataproviderMock.getTasks().get(0).getId());
-        assertEquals(true, dataproviderMock.getTasks().get(0).isDone());
+        assertEquals(DateTime.now().getMillis(), dataproviderMock.getTasks().get(0).getDoneOn().getMillis(),
+            Period.seconds(1).getMillis());
     }
 
     @Test
@@ -74,7 +75,7 @@ public class PersistentTaskManagerTests {
     public void PersistentTaskManager_doesNotYieldRelevantTask_IfDone() {
         Task task = new Task();
         task.setTitle("UNITTEST");
-        task.setDone(true);
+        task.setDoneOn(DateTime.now().minusDays(1));
         TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(task);
 
         PersistentTaskManager sut = new PersistentTaskManager(dataproviderMock);

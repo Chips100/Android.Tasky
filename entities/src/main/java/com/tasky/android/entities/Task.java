@@ -8,7 +8,7 @@ import org.joda.time.DateTime;
 public final class Task extends TaskyEntityBase {
     private String title;
     private DateTime createdOn;
-    private boolean done;
+    private DateTime doneOn;
     private DateTime postponedUntil;
     private Integer createdFromRecurringTaskId;
     private DateTime dueDate;
@@ -38,16 +38,16 @@ public final class Task extends TaskyEntityBase {
     public void setCreatedOn(DateTime value) { createdOn = value; }
 
     /**
-     * Indicates if this Task has been done.
-     * @return True, if this Task has been done; otherwise false.
+     * Gets the date and time when this task has been done.
+     * @return The date and time when this task has been done; or null if it not done.
      */
-    public boolean isDone() { return done; }
+    public DateTime getDoneOn() { return doneOn; }
 
     /**
-     * Sets if this Task has been done.
-     * @param value True, if this Task has been done; otherwise false.
+     * Sets the date and time when this task has been done.
+     * @param value The date and time when this task has been done; or null if it not done.
      */
-    public void setDone(boolean value) { done = value; }
+    public void setDoneOn(DateTime value) { doneOn = value; }
 
 
     /**
@@ -89,4 +89,10 @@ public final class Task extends TaskyEntityBase {
      * @param value The date on which this task should be due; or null if should be immediately due.
      */
     public void setDueDate(DateTime value) { dueDate = value; }
+
+    /**
+     * Indicates if this Task has been done.
+     * @return True, if this Task has been done; otherwise false.
+     */
+    public boolean isDone() { return doneOn != null; }
 }

@@ -54,7 +54,7 @@ public final class PersistentTaskManager implements TaskManager {
     @Override
     public void setTaskDone(long id) {
         Task task = getTaskById(id);
-        task.setDone(true);
+        task.setDoneOn(DateTime.now());
         dataprovider.updateTask(task);
     }
 
@@ -66,7 +66,7 @@ public final class PersistentTaskManager implements TaskManager {
     public List<Task> getRelevantTasks() {
         // Relevant tasks include only tasks which...
         // ... are not done.
-        QueryFilterBase doneFilter = new ValueQueryFilter(TaskyContract.Task.COLUMN_NAME_DONE, ValueQueryFilter.Type.Equals, false);
+        QueryFilterBase doneFilter = new ValueQueryFilter(TaskyContract.Task.COLUMN_NAME_DONE_ON, ValueQueryFilter.Type.IsNull, null);
         // ... are due.
         QueryFilter dueDateFilter = QueryFilterFactory.smallerThanOrNull(
                 TaskyContract.Task.COLUMN_NAME_DUE_DATE, DateTime.now());
