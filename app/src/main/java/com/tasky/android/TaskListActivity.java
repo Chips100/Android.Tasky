@@ -107,13 +107,21 @@ public class TaskListActivity extends AppCompatActivity {
      * @param task Task that should be done.
      */
     public void setTaskDone(Task task) {
-        // Set task to done via manager and reload the relevant task list accordingly.
+        // Set task to done via manager.
         taskManager.setTaskDone(task.getId());
-        renderRelevantTasks();
 
         // Present an option to revert the action.
         lastTaskDone = task;
         revertTaskDoneSnackbar.show();
+
+        // Reload task list to remove now done task.
+        // Little delay to display the Checkbox-Check animation.
+        ActivityTools.delay(new Runnable() {
+            @Override
+            public void run() {
+                renderRelevantTasks();
+            }
+        }, getResources().getInteger(R.integer.remove_done_task_delay));
     }
 
     /**

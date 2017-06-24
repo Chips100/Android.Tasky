@@ -16,6 +16,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/taskItemTitleText"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:text="Placeholder"/>
 </LinearLayout>
