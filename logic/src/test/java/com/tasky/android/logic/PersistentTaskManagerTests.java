@@ -109,4 +109,18 @@ public class PersistentTaskManagerTests {
 
         assertEquals(0, result.size());
     }
+
+    @Test
+    public void PersistentTaskManager_revertsTaskDone() {
+        Task task = new Task();
+        task.setDoneOn(new DateTime(2017, 06, 24, 0, 0));
+        task.setId(42);
+        TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(task);
+
+        PersistentTaskManager sut = new PersistentTaskManager(dataproviderMock);
+        sut.revertTaskDone(42);
+        
+        assertEquals(1, dataproviderMock.getTasks().size());
+        assertEquals(false, dataproviderMock.getTasks().get(0).isDone());
+    }
 }

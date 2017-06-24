@@ -25,6 +25,12 @@ public interface TaskManager {
     void setTaskDone(long id);
 
     /**
+     * Reverts the done-state of the specified task.
+     * @param id Id of the task that should not be done anymore.
+     */
+    void revertTaskDone(long id);
+
+    /**
      * Gets all tasks that are relevant to display to the user.
      * @return A list with all relevant tasks.
      */

@@ -59,6 +59,17 @@ public final class PersistentTaskManager implements TaskManager {
     }
 
     /**
+     * Reverts the done-state of the specified task.
+     * @param id Id of the task that should not be done anymore.
+     */
+    @Override
+    public void revertTaskDone(long id) {
+        Task task = getTaskById(id);
+        task.setDoneOn(null);
+        dataprovider.updateTask(task);
+    }
+
+    /**
      * Gets all tasks that are relevant to display to the user.
      * @return A list with all relevant tasks.
      */
