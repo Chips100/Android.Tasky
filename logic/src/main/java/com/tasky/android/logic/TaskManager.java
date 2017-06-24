@@ -31,6 +31,13 @@ public interface TaskManager {
     void revertTaskDone(long id);
 
     /**
+     * Postpones the specified task to the specified date.
+     * @param id Id of the task to postpone.
+     * @param postponeUntil Date until which the task should be postponed.
+     */
+    void postponeTask(long id, DateTime postponeUntil);
+
+    /**
      * Gets all tasks that are relevant to display to the user.
      * @return A list with all relevant tasks.
      */

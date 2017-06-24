@@ -113,7 +113,7 @@ public class PersistentTaskManagerTests {
     @Test
     public void PersistentTaskManager_revertsTaskDone() {
         Task task = new Task();
-        task.setDoneOn(new DateTime(2017, 06, 24, 0, 0));
+        task.setDoneOn(new DateTime(2017, 6, 24, 0, 0));
         task.setId(42);
         TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(task);
 
@@ -122,5 +122,18 @@ public class PersistentTaskManagerTests {
         
         assertEquals(1, dataproviderMock.getTasks().size());
         assertEquals(false, dataproviderMock.getTasks().get(0).isDone());
+    }
+
+    @Test
+    public void PersistentTaskManager_postponesTask() {
+        Task task = new Task();
+        task.setId(42);
+        TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(task);
+
+        PersistentTaskManager sut = new PersistentTaskManager(dataproviderMock);
+        sut.postponeTask(42, new DateTime(2017, 6, 24, 0, 0));
+
+        assertEquals(1, dataproviderMock.getTasks().size());
+        assertEquals(new DateTime(2017, 6, 24, 0, 0), dataproviderMock.getTasks().get(0).getPostponedUntil());
     }
 }
