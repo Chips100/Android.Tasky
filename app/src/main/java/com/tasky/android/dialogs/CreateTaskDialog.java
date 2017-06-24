@@ -1,10 +1,11 @@
 package com.tasky.android.dialogs;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -44,6 +45,9 @@ public class CreateTaskDialog extends Dialog implements View.OnClickListener {
 
         findViews();
         setUiHandlers();
+
+        Window window = getWindow();
+        if (window != null) window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     /**
