@@ -22,4 +22,24 @@ public class ReflectionTools {
         }
         return fields;
     }
+
+    /**
+     * Copies the values from all fields from one object to another.
+     * @param source Object with the values to copy.
+     * @param target Object that should be updated.
+     * @param <T> Type of the objects.
+     * @return The target object with updated fields.
+     */
+    public static<T> T copyFields(T source, T target) throws IllegalAccessException {
+        ParameterCheck.NotNull(source, "source");
+        ParameterCheck.NotNull(target, "target");
+
+        List<Field> fields = getFieldsWithInheritance(source.getClass());
+        for (Field field : fields) {
+            field.setAccessible(true);
+            field.set(target, field.get(source));
+        }
+
+        return target;
+    }
 }

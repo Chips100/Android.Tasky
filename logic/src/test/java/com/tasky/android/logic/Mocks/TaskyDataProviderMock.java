@@ -3,6 +3,7 @@ package com.tasky.android.logic.Mocks;
 import com.tasky.android.entities.Task;
 import com.tasky.android.storage.TaskyDataProvider;
 import com.tasky.android.storage.queries.QueryFilter;
+import com.tasky.android.utilities.ReflectionTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class TaskyDataProviderMock implements TaskyDataProvider {
                 }
             }
             catch(IllegalAccessException exception) {
-                // Do nothing, should not be found.
+                // Do nothing, should not occur.
                 // Will cause error in unit test if relevant.
             }
         }
@@ -62,14 +63,12 @@ public class TaskyDataProviderMock implements TaskyDataProvider {
     }
 
     private Task cloneTask(Task task) {
-        Task result = new Task();
-        result.setId(task.getId());
-        result.setTitle(task.getTitle());
-        result.setCreatedOn(task.getCreatedOn());
-        result.setDoneOn(task.getDoneOn());
-        result.setPostponedUntil(task.getPostponedUntil());
-        result.setCreatedFromRecurringTaskId(task.getCreatedFromRecurringTaskId());
-        result.setDueDate(task.getDueDate());
-        return result;
+        try {
+            return ReflectionTools.copyFields(task, new Task());
+        } catch (IllegalAccessException e) {
+            // Do nothing, should not occur.
+            // Will cause error in unit test if relevant.
+            return null;
+        }
     }
 }
