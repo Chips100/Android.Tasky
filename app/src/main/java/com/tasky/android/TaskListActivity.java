@@ -5,13 +5,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.tasky.android.adapters.TaskArrayAdapter;
+import com.tasky.android.dialogs.ActionDialogBase;
 import com.tasky.android.dialogs.CreateTaskDialog;
+import com.tasky.android.dialogs.PostponeTaskDialog;
 import com.tasky.android.entities.Task;
 import com.tasky.android.logic.PersistentTaskManager;
 import com.tasky.android.logic.TaskManager;
@@ -40,6 +45,7 @@ public class TaskListActivity extends AppCompatActivity {
         });
 
         revertTaskDoneSnackbar = setupRevertTaskDoneSnackbar(fab);
+        registerForContextMenu(findViewById(R.id.relevantTaskList));
 
         // TODO: As a starting point, we do very poor man's DI and Entourage Pattern all the way.
         // Would be cool to change it. But that needs more understanding...
@@ -69,19 +75,59 @@ public class TaskListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId()==R.id.relevantTaskList) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_task_list_item, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        TaskArrayAdapter adapter = (TaskArrayAdapter)((ListView)findViewById(R.id.relevantTaskList)).getAdapter();
+
+        switch(item.getItemId()) {
+            case R.id.menu_task_list_item_postpone:
+                postponeTask(adapter.getItem(info.position));
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
     /**
      * Displays the UI to create a new task.
      */
     public void createNewTask() {
         hideSnackbar();
 
-        new CreateTaskDialog(this, new CreateTaskDialog.OnTaskCreateListener() {
+        new CreateTaskDialog(this, new ActionDialogBase.OnActionDialogCompleteListener<CreateTaskDialog.TaskCreateResult>() {
             @Override
-            public boolean handleTaskCreate(String title, DateTime dueDate) {
-            // Create task via manager and reload the relevant task list accordingly.
-            taskManager.createTask(title, dueDate);
-            renderRelevantTasks();
-            return true;
+            public boolean handleComplete(CreateTaskDialog.TaskCreateResult result) {
+                // Create task via manager and reload the relevant task list accordingly.
+                taskManager.createTask(result.getTitle(), result.getDueDate());
+                renderRelevantTasks();
+                return true;
+            }
+        }).show();
+    }
+
+    /**
+     * Displays the UI to postpone an existing task.
+     * @param task Task that should be postponed.
+     */
+    public void postponeTask(final Task task) {
+        hideSnackbar();
+
+        new PostponeTaskDialog(this, new ActionDialogBase.OnActionDialogCompleteListener<DateTime>() {
+            @Override
+            public boolean handleComplete(DateTime result) {
+                taskManager.postponeTask(task.getId(), result);
+                renderRelevantTasks();
+                return true;
             }
         }).show();
     }

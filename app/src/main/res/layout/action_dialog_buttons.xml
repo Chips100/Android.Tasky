@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    android:layout_marginTop="15dp"
+    android:gravity="end">
 
-    <CheckBox
+    <Button
+        android:id="@+id/action_dialog_button_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/taskItemDoneState"
-        android:focusable="false"/>
+        android:text="@string/dialog_cancel"/>
 
-    <TextView
+    <Button
+        android:id="@+id/action_dialog_button_complete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/taskItemTitleText"
-        android:textSize="24sp"
-        android:text="Placeholder"/>
+        android:text="@string/dialog_ok"/>
 </LinearLayout>

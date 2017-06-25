@@ -1,128 +1,109 @@
 package com.tasky.android.dialogs;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.tasky.android.R;
-import com.tasky.android.utilities.ParameterCheck;
 
 import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Dialog with inputs required to create a new task.
  */
-public class CreateTaskDialog extends Dialog implements View.OnClickListener {
-    private final Context context;
-    private final OnTaskCreateListener listener;
-    private EditText titleEditText;
-    private EditText dueDateEditText;
-    private DateTime dueDate;
-
-    /**
-     * Creates a CreateTaskDialog.
-     * @param context Context in which to create the dialog.
-     * @param listener Listener that should be called when the creation is requested.
-     */
-    public CreateTaskDialog(Context context, OnTaskCreateListener listener) {
-        super(context);
-        ParameterCheck.NotNull(listener, "listener");
-
-        this.context = context;
-        this.listener = listener;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.task_create);
-
-        findViews();
-        setUiHandlers();
-
-        Window window = getWindow();
-        if (window != null) window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+public class CreateTaskDialog extends ActionDialogBase<CreateTaskDialog.TaskCreateResult> {
+    public CreateTaskDialog(Context context, OnActionDialogCompleteListener<TaskCreateResult> completeListener) {
+        super(context, completeListener);
     }
 
     /**
-     * Finds views in the content view and stores them in fields.
-     */
-    private void findViews() {
-        titleEditText = (EditText)findViewById(R.id.createTaskTitle);
-        dueDateEditText = (EditText)findViewById(R.id.createTaskDueDateEditText);
-    }
-
-    /**
-     * Configures all handlers that should react to UI events.
-     */
-    private void setUiHandlers() {
-        // Button handlers handled by the onClick method.
-        Button confirmButton = (Button)findViewById(R.id.createTaskConfirmButton);
-        Button cancelButton = (Button)findViewById(R.id.createTaskCancelButton);
-        confirmButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
-
-        // Show a DatePicker when the DueDate input is focused.
-        // Unfocus it immediately to allow focusing again after closing the DatePicker.
-        dueDateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                dueDateEditText.clearFocus();
-                if (hasFocus) showDueDatePicker();
-            }
-        });
-    }
-
-    /**
-     * Handles click events on the dialog buttons.
-     * @param v View that was clicked.
+     * Gets the Id of the view that should be used for the content of the dialog.
+     * @return The Id of the content view for the dialog.
      */
     @Override
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.createTaskConfirmButton: {
-                // Creation has been requested.
-                if (listener.handleTaskCreate(titleEditText.getText().toString(), dueDate)) {
-                    hide();
-                }
-                break;
-            }
-            case R.id.createTaskCancelButton: {
-                // Cancellation has been requested.
-                hide();
-                break;
-            }
+    protected int getContentViewId() { return R.layout.action_dialog_create_task; }
+
+    /**
+     * Gets a result that represents the user input in the dialog.
+     * @return A result with the user input in the dialog.
+     */
+    @Override
+    protected TaskCreateResult getDialogResult() {
+        return new TaskCreateResult(
+            ((EditText)findViewById(R.id.createTaskTitle)).getText().toString(),
+            getDateValue(R.id.createTaskDueDateEditText)
+        );
+    }
+
+    /**
+     * Can be overridden to indicate which controls in the dialog represent date inputs.
+     * @return List of Ids of the controls that represent date inputs.
+     */
+    @Override
+    protected List<Integer> getDateInputIds() {
+        List<Integer> result = new ArrayList();
+        result.add(R.id.createTaskDueDateEditText);
+        return result;
+    }
+
+    /**
+     * Can be overridden to suggest a Date value when the user first opens a date picker.
+     * If not overridden, the current Date will be suggested.
+     * @param dateInputId Id of the control for which to suggest a value.
+     * @return The value that should be suggested when the user opens the date picker for the first time.
+     */
+    @Override
+    protected DateTime suggestDateValue(int dateInputId) {
+        // Suggest tomorrow for due date, as today would have the same effect as selecting no value.
+        if (dateInputId == R.id.createTaskDueDateEditText) {
+            return DateTime.now().plusDays(1);
         }
+
+        return super.suggestDateValue(dateInputId);
     }
 
     /**
-     * Shows a DatePicker to select the due date of the task.
+     * Can be overridden to define a custom text for the button that completes the dialog.
+     * @return A String with the custom text for the button; or null to keep the default.
      */
-    private void showDueDatePicker() {
-        // If no due date has been previously selected, the default is tomorrow.
-        // Today would make less sense as that would be equal to not specifying a due date at all.
-        DateTime current = dueDate != null ? dueDate : DateTime.now().plusDays(1);
-
-        // Show DatePicker.
-        new JodaDatePickerDialog(context, new JodaDatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, DateTime date) {
-            dueDate = date;
-            dueDateEditText.setText(dueDate.toString(context.getString(R.string.format_shortdate)));
-            }
-        }, current).show();
+    @Override
+    protected String getCompleteButtonText() {
+        return getContext().getResources().getString(R.string.action_dialog_create_task_ok);
     }
 
     /**
-     * Reacts to requests for creating a new task.
+     * Can be overridden to automatically show the keyboard when the dialog is opened
+     * to allow immediate input by the user without any extra clicks.
+     * @return True, if the keyboard should be shown when the dialog is opened; otherwise false.
      */
-    public interface OnTaskCreateListener {
-        boolean handleTaskCreate(String title, DateTime dueDate);
+    @Override
+    protected boolean showKeyboardOnOpen() { return true; }
+
+
+    /**
+     * Represents the user input from a CreateTaskDialog.
+     */
+    public final class TaskCreateResult {
+        private final String title;
+        private final DateTime dueDate;
+
+        public TaskCreateResult(String title, DateTime dueDate) {
+            this.title = title;
+            this.dueDate = dueDate;
+        }
+
+        /**
+         * Gets the title entered in the CreateTaskDialog.
+         * @return The title entered in the CreateTaskDialog.
+         */
+        public String getTitle() { return title; }
+
+        /**
+         * Gets the due date entered in the CreateTaskDialog.
+         * @return The due date entered in the CreateTaskDialog.
+         */
+        public DateTime getDueDate() { return dueDate; }
     }
 }

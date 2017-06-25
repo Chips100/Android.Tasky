@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
 
@@ -24,23 +25,5 @@
         android:layout_height="wrap_content"
         android:text="@string/task_due_date_description"/>
 
-    <!-- Dialog Buttons. -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:gravity="end">
-
-        <Button
-            android:id="@+id/createTaskCancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_cancel"/>
-
-        <Button
-            android:id="@+id/createTaskConfirmButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/task_create_dialog_ok"/>
-    </LinearLayout>
+    <include layout="@layout/action_dialog_buttons" />
 </LinearLayout>

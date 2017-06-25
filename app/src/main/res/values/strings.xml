@@ -8,7 +8,11 @@
 
     <string name="task_title">Title</string>
     <string name="task_due_date">Due on</string>
+    <string name="task_postpone_date">Postpone until</string>
     <string name="task_due_date_description">Enter a date if you do not want the task to appear in your list right away.</string>
-    <string name="task_create_dialog_ok">Create task</string>
+    <string name="task_postpone_date_description">Enter the date on which you want the task to reappear in your list.</string>
+    <string name="action_dialog_create_task_ok">Create task</string>
+    <string name="action_dialog_postpone_task_ok">Postpone task</string>
     <string name="task_done_message">Task is now done.</string>
+    <string name="task_action_postpone">Postpone</string>
 </resources>
