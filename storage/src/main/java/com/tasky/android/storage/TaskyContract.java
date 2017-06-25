@@ -18,6 +18,7 @@ public final class TaskyContract {
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_CREATED_ON = "createdOn";
         public static final String COLUMN_NAME_DONE_ON = "doneOn";
+        public static final String COLUMN_NAME_PRIORITY = "priority";
         public static final String COLUMN_NAME_POSTPONED_UNTIL = "postponedUntil";
         public static final String COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID = "createdFromRecurringTaskId";
         public static final String COLUMN_NAME_DUE_DATE = "dueDate";

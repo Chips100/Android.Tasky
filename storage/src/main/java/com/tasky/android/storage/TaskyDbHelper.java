@@ -34,6 +34,7 @@ public class TaskyDbHelper extends SQLiteOpenHelper {
             TaskyContract.Task.COLUMN_NAME_TITLE + " TEXT NOT NULL," +
             TaskyContract.Task.COLUMN_NAME_CREATED_ON + " DATE NOT NULL," +
             TaskyContract.Task.COLUMN_NAME_DONE_ON + " DATE," +
+            TaskyContract.Task.COLUMN_NAME_PRIORITY + " INTEGER NOT NULL," +
             TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL + " DATE," +
             TaskyContract.Task.COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID + " INTEGER" +
                 " REFERENCES "+ TaskyContract.RecurringTask.TABLE_NAME + "(" + TaskyContract.RecurringTask._ID + ")," +
