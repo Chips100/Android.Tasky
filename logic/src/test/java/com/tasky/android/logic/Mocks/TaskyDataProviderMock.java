@@ -6,6 +6,7 @@ import com.tasky.android.storage.queries.QueryFilter;
 import com.tasky.android.utilities.ReflectionTools;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,6 +22,10 @@ public class TaskyDataProviderMock implements TaskyDataProvider {
     public TaskyDataProviderMock() {}
 
     public TaskyDataProviderMock(Task task) { tasks.add(task); }
+
+    public TaskyDataProviderMock(Task... tasks) {
+        Collections.addAll(this.tasks, tasks);
+    }
 
     /**
      * Gets the underlying in-memory collection of stored tasks.

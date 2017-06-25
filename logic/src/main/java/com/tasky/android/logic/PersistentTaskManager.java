@@ -11,6 +11,8 @@ import com.tasky.android.utilities.ParameterCheck;
 
 import org.joda.time.DateTime;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -97,7 +99,16 @@ public final class PersistentTaskManager implements TaskManager {
         QueryFilter postponedUntilFilter = QueryFilterFactory.smallerThanOrNull(
                 TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL, DateTime.now());
 
-        return dataprovider.queryTasks(doneFilter.And(dueDateFilter).And(postponedUntilFilter));
+        // Get relevant tasks and sort them by their priority before returning them.
+        List<Task> tasks = dataprovider.queryTasks(doneFilter.And(dueDateFilter).And(postponedUntilFilter));
+        Collections.sort(tasks, new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                return ((Integer)o1.getPriority()).compareTo(o2.getPriority());
+            }
+        });
+
+        return tasks;
     }
 
     /**

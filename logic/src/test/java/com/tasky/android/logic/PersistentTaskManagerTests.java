@@ -136,4 +136,32 @@ public class PersistentTaskManagerTests {
         assertEquals(1, dataproviderMock.getTasks().size());
         assertEquals(new DateTime(2017, 6, 24, 0, 0), dataproviderMock.getTasks().get(0).getPostponedUntil());
     }
+
+    @Test
+    public void PersistentTaskManager_sortsRelevantTasksByPriority() {
+        // Task with middle priority.
+        Task middle = new Task();
+        middle.setId(42);
+        middle.setPriority(5);
+
+        // Task with high priority.
+        Task high = new Task();
+        high.setId(1337);
+        high.setPriority(1);
+
+        // Task with low priority
+        Task low = new Task();
+        low.setId(7);
+        low.setPriority(100);
+
+        TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(middle, high, low);
+
+        PersistentTaskManager sut = new PersistentTaskManager(dataproviderMock);
+        List<Task> result = sut.getRelevantTasks();
+
+        assertEquals(3, result.size());
+        assertEquals(high.getId(), result.get(0).getId());
+        assertEquals(middle.getId(), result.get(1).getId());
+        assertEquals(low.getId(), result.get(2).getId());
+    }
 }
