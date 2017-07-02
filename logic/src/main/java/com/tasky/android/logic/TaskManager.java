@@ -1,6 +1,7 @@
 package com.tasky.android.logic;
 
 import com.tasky.android.entities.Task;
+import com.tasky.android.entities.TaskPriority;
 
 import org.joda.time.DateTime;
 
@@ -36,6 +37,13 @@ public interface TaskManager {
      * @param postponeUntil Date until which the task should be postponed.
      */
     void postponeTask(long id, DateTime postponeUntil);
+
+    /**
+     * Changes the priority of the specified task.
+     * @param id Id of the task of which the priority should be changed.
+     * @param priority Priority that the task should have.
+     */
+    void changeTaskPriority(long id, TaskPriority priority);
 
     /**
      * Gets all tasks that are relevant to display to the user.

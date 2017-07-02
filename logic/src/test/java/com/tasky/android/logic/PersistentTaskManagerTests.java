@@ -141,6 +141,20 @@ public class PersistentTaskManagerTests {
     }
 
     @Test
+    public void PersistentTaskManager_changesTaskPriority() {
+        Task task = new Task();
+        task.setId(42);
+        task.setPriority(TaskPriority.Normal);
+        TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(task);
+
+        PersistentTaskManager sut = new PersistentTaskManager(dataproviderMock);
+        sut.changeTaskPriority(42, TaskPriority.High);
+
+        assertEquals(1, dataproviderMock.getTasks().size());
+        assertEquals(TaskPriority.High, dataproviderMock.getTasks().get(0).getPriority());
+    }
+
+    @Test
     public void PersistentTaskManager_sortsRelevantTasksByPriority() {
         // Task with middle priority.
         Task middle = new Task();

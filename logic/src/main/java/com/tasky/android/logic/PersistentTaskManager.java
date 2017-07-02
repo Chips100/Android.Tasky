@@ -86,6 +86,18 @@ public final class PersistentTaskManager implements TaskManager {
     }
 
     /**
+     * Changes the priority of the specified task.
+     * @param id Id of the task of which the priority should be changed.
+     * @param priority Priority that the task should have.
+     */
+    @Override
+    public void changeTaskPriority(long id, TaskPriority priority) {
+        Task task = getTaskById(id);
+        task.setPriority(priority);
+        dataprovider.updateTask(task);
+    }
+
+    /**
      * Gets all tasks that are relevant to display to the user.
      * @return A list with all relevant tasks.
      */
