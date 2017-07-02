@@ -25,6 +25,15 @@ public class SqliteTools {
     }
 
     /**
+     * Converts the specified enum value to an Integer for storage in the database.
+     * @param enumValue Enum value that should be stored.
+     * @return An Integer that represents the enum value.
+     */
+    public static Integer convertEnum(Object enumValue) {
+        return EnumMapper.getIntegerByEnum(enumValue);
+    }
+
+    /**
      * Converts the specified value to a String that can be used as an Sqlite query parameter.
      * @param value Value that should be converted.
      * @return A string that represents the value as an Sqlite query parameter.
@@ -76,6 +85,18 @@ public class SqliteTools {
     @Nullable
     public static DateTime getDateTime(Cursor cursor, Integer columnIndex) {
         return cursor.isNull(columnIndex) ? null : new DateTime(cursor.getLong(columnIndex));
+    }
+
+    /**
+     * Reads an enum value from the cursor.
+     * @param cursor Cursor from which to read the enum value.
+     * @param columnIndex Index at which the enum value should be read from the cursor.
+     * @param enumClass Class of the enum value that should be read.
+     * @param <T> Type of the enum value that should be read.
+     * @return The enum value read from the cursor.
+     */
+    public static<T> T getEnum(Cursor cursor, Integer columnIndex, Class enumClass) {
+        return EnumMapper.getEnumByInteger(cursor.getInt(columnIndex), enumClass);
     }
 
     /**

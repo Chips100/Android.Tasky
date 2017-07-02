@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.tasky.android.entities.Task;
+import com.tasky.android.entities.TaskPriority;
 import com.tasky.android.storage.queries.QueryFilter;
 import com.tasky.android.utilities.ParameterCheck;
 
@@ -85,7 +86,7 @@ public class SqliteTaskyDataProvider implements TaskyDataProvider {
         values.put(TaskyContract.Task.COLUMN_NAME_TITLE, task.getTitle());
         values.put(TaskyContract.Task.COLUMN_NAME_CREATED_ON, SqliteTools.convertDateTime(task.getCreatedOn()));
         values.put(TaskyContract.Task.COLUMN_NAME_DONE_ON, SqliteTools.convertDateTime(task.getDoneOn()));
-        values.put(TaskyContract.Task.COLUMN_NAME_PRIORITY, task.getPriority());
+        values.put(TaskyContract.Task.COLUMN_NAME_PRIORITY, SqliteTools.convertEnum(task.getPriority()));
         values.put(TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL, SqliteTools.convertDateTime(task.getPostponedUntil()));
         values.put(TaskyContract.Task.COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID, task.getCreatedFromRecurringTaskId());
         values.put(TaskyContract.Task.COLUMN_NAME_DUE_DATE, SqliteTools.convertDateTime(task.getDueDate()));
@@ -98,7 +99,7 @@ public class SqliteTaskyDataProvider implements TaskyDataProvider {
         task.setTitle(cursor.getString(indices.get(TaskyContract.Task.COLUMN_NAME_TITLE)));
         task.setCreatedOn(SqliteTools.getDateTime(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_CREATED_ON)));
         task.setDoneOn(SqliteTools.getDateTime(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_DONE_ON)));
-        task.setPriority(cursor.getInt(indices.get(TaskyContract.Task.COLUMN_NAME_PRIORITY)));
+        task.setPriority(SqliteTools.<TaskPriority>getEnum(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_PRIORITY), TaskPriority.class));
         task.setPostponedUntil(SqliteTools.getDateTime(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_POSTPONED_UNTIL)));
         task.setCreatedFromRecurringTaskId(SqliteTools.getNullableInt(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_CREATED_FROM_RECURRING_TASK_ID)));
         task.setDueDate(SqliteTools.getDateTime(cursor, indices.get(TaskyContract.Task.COLUMN_NAME_DUE_DATE)));

@@ -1,6 +1,7 @@
 package com.tasky.android.logic;
 
 import com.tasky.android.entities.Task;
+import com.tasky.android.entities.TaskPriority;
 import com.tasky.android.storage.TaskyContract;
 import com.tasky.android.storage.TaskyDataProvider;
 import com.tasky.android.storage.queries.QueryFilter;
@@ -44,6 +45,7 @@ public final class PersistentTaskManager implements TaskManager {
         task.setTitle(title);
         task.setDueDate(dueDate);
         task.setCreatedOn(DateTime.now());
+        task.setPriority(TaskPriority.Normal);
 
         dataprovider.insertTask(task);
         return task;
@@ -104,7 +106,7 @@ public final class PersistentTaskManager implements TaskManager {
         Collections.sort(tasks, new Comparator<Task>() {
             @Override
             public int compare(Task o1, Task o2) {
-                return ((Integer)o1.getPriority()).compareTo(o2.getPriority());
+                return ((Integer)o1.getPriority().getSortIndex()).compareTo(o2.getPriority().getSortIndex());
             }
         });
 

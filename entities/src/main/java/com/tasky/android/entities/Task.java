@@ -9,7 +9,7 @@ public final class Task extends TaskyEntityBase {
     private String title;
     private DateTime createdOn;
     private DateTime doneOn;
-    private int priority;
+    private TaskPriority priority;
     private DateTime postponedUntil;
     private Integer createdFromRecurringTaskId;
     private DateTime dueDate;
@@ -52,16 +52,16 @@ public final class Task extends TaskyEntityBase {
 
 
     /**
-     * Gets the priority of this task - the lower the number, the higher the priority.
-     * @return The priority of this task - the lower the number, the higher the priority.
+     * Gets the priority of this task.
+     * @return The priority of this task.
      */
-    public int getPriority() { return priority; }
+    public TaskPriority getPriority() { return priority; }
 
     /**
-     * Sets the priority of this task - the lower the number, the higher the priority.
-     * @param value The priority that the task should have - the lower the number, the higher the priority.
+     * Sets the priority of this task.
+     * @param value The priority that the task should have.
      */
-    public void setPriority(int value) { priority = value; }
+    public void setPriority(TaskPriority value) { priority = value; }
 
 
     /**

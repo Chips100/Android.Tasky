@@ -1,6 +1,7 @@
 package com.tasky.android.logic;
 
 import com.tasky.android.entities.Task;
+import com.tasky.android.entities.TaskPriority;
 import com.tasky.android.logic.Mocks.TaskyDataProviderMock;
 
 import org.joda.time.DateTime;
@@ -24,6 +25,7 @@ public class PersistentTaskManagerTests {
 
         assertEquals(1, dataproviderMock.getTasks().size());
         assertEquals("TITLE", dataproviderMock.getTasks().get(0).getTitle());
+        assertEquals(TaskPriority.Normal, dataproviderMock.getTasks().get(0).getPriority());
         assertNull(dataproviderMock.getTasks().get(0).getDueDate());
         assertEquals(DateTime.now().getMillis(), dataproviderMock.getTasks().get(0).getCreatedOn().getMillis(),
             Period.seconds(1).getMillis());
@@ -38,6 +40,7 @@ public class PersistentTaskManagerTests {
 
         assertEquals(1, dataproviderMock.getTasks().size());
         assertEquals("TITLE", dataproviderMock.getTasks().get(0).getTitle());
+        assertEquals(TaskPriority.Normal, dataproviderMock.getTasks().get(0).getPriority());
         assertEquals(new DateTime(2017, 6, 18, 0, 0), dataproviderMock.getTasks().get(0).getDueDate());
         assertEquals(DateTime.now().getMillis(), dataproviderMock.getTasks().get(0).getCreatedOn().getMillis(),
             Period.seconds(1).getMillis());
@@ -142,17 +145,17 @@ public class PersistentTaskManagerTests {
         // Task with middle priority.
         Task middle = new Task();
         middle.setId(42);
-        middle.setPriority(5);
+        middle.setPriority(TaskPriority.Normal);
 
         // Task with high priority.
         Task high = new Task();
         high.setId(1337);
-        high.setPriority(1);
+        high.setPriority(TaskPriority.High);
 
         // Task with low priority
         Task low = new Task();
         low.setId(7);
-        low.setPriority(100);
+        low.setPriority(TaskPriority.Low);
 
         TaskyDataProviderMock dataproviderMock = new TaskyDataProviderMock(middle, high, low);
 
