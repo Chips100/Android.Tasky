@@ -31,8 +31,8 @@ public class ReflectionTools {
      * @return The target object with updated fields.
      */
     public static<T> T copyFields(T source, T target) throws IllegalAccessException {
-        ParameterCheck.NotNull(source, "source");
-        ParameterCheck.NotNull(target, "target");
+        ParameterCheck.notNull(source, "source");
+        ParameterCheck.notNull(target, "target");
 
         List<Field> fields = getFieldsWithInheritance(source.getClass());
         for (Field field : fields) {

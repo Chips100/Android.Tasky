@@ -37,7 +37,7 @@ public abstract class ActionDialogBase<T> extends Dialog implements View.OnClick
      */
     protected ActionDialogBase(Context context, OnActionDialogCompleteListener<T> completeListener) {
         super(context);
-        ParameterCheck.NotNull(completeListener, "completeListener");
+        ParameterCheck.notNull(completeListener, "completeListener");
 
         this.context = context;
         this.completeListener = completeListener;

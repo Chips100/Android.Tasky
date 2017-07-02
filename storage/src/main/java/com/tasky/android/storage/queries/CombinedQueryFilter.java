@@ -19,9 +19,9 @@ public final class CombinedQueryFilter extends QueryFilterBase {
      * @param combinationType Type indicating how the combination should behave.
      */
     public CombinedQueryFilter(QueryFilter first, QueryFilter second, CombinationType combinationType) {
-        ParameterCheck.NotNull(first, "first");
-        ParameterCheck.NotNull(second, "second");
-        ParameterCheck.NotNull(combinationType, "combinationType");
+        ParameterCheck.notNull(first, "first");
+        ParameterCheck.notNull(second, "second");
+        ParameterCheck.notNull(combinationType, "combinationType");
 
         this.first = first;
         this.second = second;

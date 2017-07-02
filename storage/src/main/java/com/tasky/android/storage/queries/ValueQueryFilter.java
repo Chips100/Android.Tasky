@@ -23,9 +23,9 @@ public class ValueQueryFilter<TValue> extends QueryFilterBase {
      * @param expected Value that should be used for the comparison.
      */
     public ValueQueryFilter(String columnName, Type type, TValue expected) {
-        ParameterCheck.NotNull(columnName, "columnName");
-        ParameterCheck.NotNull(type, "type");
-        if (type.usesValue()) ParameterCheck.NotNull(expected, "expected");
+        ParameterCheck.notNull(columnName, "columnName");
+        ParameterCheck.notNull(type, "type");
+        if (type.usesValue()) ParameterCheck.notNull(expected, "expected");
 
         this.columnName = columnName;
         this.type = type;

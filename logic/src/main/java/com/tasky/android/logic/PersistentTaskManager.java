@@ -29,7 +29,7 @@ public final class PersistentTaskManager implements TaskManager {
      * @param dataprovider TaskyDataProvider on which to operate.
      */
     public PersistentTaskManager(TaskyDataProvider dataprovider) {
-        ParameterCheck.NotNull(dataprovider, "dataprovider");
+        ParameterCheck.notNull(dataprovider, "dataprovider");
         this.dataprovider = dataprovider;
     }
 

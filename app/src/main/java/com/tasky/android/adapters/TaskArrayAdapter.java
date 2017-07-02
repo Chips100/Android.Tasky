@@ -22,7 +22,7 @@ public class TaskArrayAdapter extends ArrayAdapter<Task> {
 
     public TaskArrayAdapter(Context context, OnTaskDoneListener listener) {
         super(context, R.layout.task_item, R.id.taskItemTitleText);
-        ParameterCheck.NotNull(listener, "listener");
+        ParameterCheck.notNull(listener, "listener");
 
         this.listener = listener;
     }

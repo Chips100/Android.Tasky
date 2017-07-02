@@ -50,7 +50,7 @@ public class SqliteTaskyDataProvider implements TaskyDataProvider {
      */
     @Override
     public List<Task> queryTasks(QueryFilter filter) {
-        ParameterCheck.NotNull(filter, "filter");
+        ParameterCheck.notNull(filter, "filter");
 
         List<String> params = filter.getSqliteParameters();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -73,7 +73,7 @@ public class SqliteTaskyDataProvider implements TaskyDataProvider {
      */
     @Override
     public void updateTask(Task task) {
-        ParameterCheck.NotNull(task, "task");
+        ParameterCheck.notNull(task, "task");
 
         // Update task with the current data, matching it by its Id.
         SQLiteDatabase db = dbHelper.getWritableDatabase();

@@ -39,7 +39,7 @@ public class SqliteTools {
      * @return A string that represents the value as an Sqlite query parameter.
      */
     public static String convertSqliteParameter(Object value) {
-        ParameterCheck.NotNull(value, "value");
+        ParameterCheck.notNull(value, "value");
 
         if (value instanceof DateTime) {
             value = convertDateTime((DateTime)value);

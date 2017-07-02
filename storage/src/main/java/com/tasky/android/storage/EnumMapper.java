@@ -27,9 +27,9 @@ public class EnumMapper {
         // Map null values to null integers.
         if (enumValue == null) return null;
 
-        ParameterCheck.IsKeyOf(enumValue.getClass(), EnumMaps, "Class of enumValue", "EnumMaps");
+        ParameterCheck.isKeyOf(enumValue.getClass(), EnumMaps, "Class of enumValue", "EnumMaps");
         Map<Object, Integer> enumMap = EnumMaps.get(enumValue.getClass());
-        ParameterCheck.IsKeyOf(enumValue, enumMap, "enumValue", "enumMap");
+        ParameterCheck.isKeyOf(enumValue, enumMap, "enumValue", "enumMap");
 
         return enumMap.get(enumValue);
     }
@@ -45,8 +45,8 @@ public class EnumMapper {
         // Map null integers to null values.
         if (integerValue == null) return null;
 
-        ParameterCheck.NotNull(enumClass, "enumClass");
-        ParameterCheck.IsKeyOf(enumClass, EnumMaps, "enumClass", "EnumMaps");
+        ParameterCheck.notNull(enumClass, "enumClass");
+        ParameterCheck.isKeyOf(enumClass, EnumMaps, "enumClass", "EnumMaps");
         Map<Object, Integer> enumMap = EnumMaps.get(enumClass);
 
         // Search map for entry that has the specified Integer as its value.

@@ -11,7 +11,7 @@ public class ParameterCheck {
      * @param value Value that should be checked for null.
      * @param parameterName Name of the parameter for which the value was passed.
      */
-    public static void NotNull(Object value, String parameterName) {
+    public static void notNull(Object value, String parameterName) {
         if (value == null) {
             throw new IllegalArgumentException(parameterName + " cannot be null.");
         }
@@ -26,8 +26,8 @@ public class ParameterCheck {
      * @param <TKey> Type of the keys of the map.
      * @param <TValue> Type of the values of the map.
      */
-    public static <TKey, TValue>void IsKeyOf(TKey key, Map<TKey, TValue> map, String keyName, String mapName) {
-        ParameterCheck.NotNull(map, mapName);
+    public static <TKey, TValue>void isKeyOf(TKey key, Map<TKey, TValue> map, String keyName, String mapName) {
+        ParameterCheck.notNull(map, mapName);
 
         if (!map.containsKey(key)) {
             throw new IllegalArgumentException(keyName + " is not a valid key of " + mapName);
